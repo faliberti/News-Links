@@ -10,7 +10,7 @@ CI_ENV = os.getenv("CI") == "true"
 def article_links_test():
     startdate = dt.date(int(2021), int(5), int(4))
     enddate = dt.date(int(2021), int(5), int(14))
-    result = get_article_links(keyword=tesla, user_start_date=startdate, user_end_date=enddate, sorting_choice='newest')
+    result = get_article_links(keyword='tesla', user_start_date=startdate, user_end_date=enddate, sorting_choice='newest')
     assert result["totalResults"] == 7139
     assert result['articles'][0]['url'] == 'https://www.daemonology.net/hn-daily/2021-05-14.html'
     
