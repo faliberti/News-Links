@@ -22,6 +22,20 @@ print('You can enter date parameters for the time period the article was written
     Please enter values in the form of YYYY, MM, DD. You can enter N/A if you dont want a start or end date. \
         Important Note: if you have the free version of the API, you can only go back one month from today\'s date.')
 
+def user_sorting():
+    print('You can sort the search results by relevancy, popularity, or the newest published. Please choose one of relevancy, popularity, newest to sort your articles.')
+    user_sort_choice = input('Enter your sorting choice: ')
+    choice_options = ['relevancy', 'popularity', 'newest']
+    if user_sort_choice.lower() in choice_options:
+        print('You sorted by: ', user_sort_choice)
+    else:
+        print('You did not choose a correct sorting option.')
+        quit()
+    if user_sort_choice.lower() == str('newest'):
+        user_sort_choice = str('publishedAt')
+    return user_sort_choice
+
+user_sorting_choice = user_sorting()
 
 def get_user_dates():
     
@@ -59,8 +73,8 @@ end_date = get_user_dates()
 print("Your starting date is: ", start_date )
 print("Your ending date is: ", end_date)
 #def get_article_links(keyword, user_start_date, user_api):
-def get_article_links(keyword, user_start_date, user_end_date, user_api):
-    api_url = f'https://newsapi.org/v2/everything?q={keyword}&from={user_start_date}&to={user_end_date}&apiKey={user_api}'
+def get_article_links(keyword, user_start_date, user_end_date, sorting_choice, user_api):
+    api_url = f'https://newsapi.org/v2/everything?q={keyword}&from={user_start_date}&to={user_end_date}&sortBy={sorting_choice}&apiKey={user_api}'
     news = requests.get(api_url).json()
 
     articles = news["articles"]
@@ -80,10 +94,7 @@ def get_article_links(keyword, user_start_date, user_end_date, user_api):
     
     print(my_news)
 
-#get_article_links(keyword=keywords, user_start_date=user_date, user_api=newsapikey)
-get_article_links(keyword=keywords, user_start_date=start_date, user_end_date=end_date, user_api=newsapikey)
-#get_article_links()
-
+get_article_links(keyword=keywords, user_start_date=start_date, user_end_date=end_date, sorting_choice=user_sorting_choice, user_api=newsapikey)
 
 #def get_aticle_links(keyword, year):
  #   """
