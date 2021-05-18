@@ -3,4 +3,4 @@ python-dotenv
 newsapi-python
 datetime
 pandas
-
+pytest

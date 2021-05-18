@@ -9,19 +9,6 @@ from newsapi import NewsApiClient
 load_dotenv()
 newsapikey = os.getenv("NEWS_API_KEY")
 
-print('Please enter a keyword or phrase on a topic you are interested in. Example: iphone x review')
-print('Please note that no keyword or phrase can be over 100 characters long')
-
-
-keywords = input("Keyword or Phrase: ")
-if len(keywords) > 100:
-    print("Sorry, your keyword was too long. Please run the search again.")
-    quit()
-
-print('You can enter date parameters for the time period the article was written. First is your start date, and second is your end date. \
-    Please enter values in the form of YYYY, MM, DD. You can enter N/A if you dont want a start or end date. \
-        Important Note: if you have the free version of the API, you can only go back one month from today\'s date.')
-
 def user_sorting():
     print('You can sort the search results by relevancy, popularity, or the newest published. Please choose one of relevancy, popularity, newest to sort your articles.')
     user_sort_choice = input('Enter your sorting choice: ')
@@ -50,7 +37,6 @@ def get_user_dates():
                 if len(user_day) <3 and len(user_day) > 0 and user_day.isdigit() and int(user_day) < 32:
                     user_date_1 = dt.date(int(user_year), int(user_month), int(user_day))
                     if user_date_1 > dt.date.today():
-                        print("Your date has not existed yet.")
                         quit()
                     else:
                         user_date_1 = user_date_1.isoformat()
@@ -68,11 +54,6 @@ def get_user_dates():
         quit()
     return user_date_1
 
-start_date = get_user_dates()
-end_date = get_user_dates()
-print("Your starting date is: ", start_date )
-print("Your ending date is: ", end_date)
-#def get_article_links(keyword, user_start_date, user_api):
 def get_article_links(keyword, user_start_date, user_end_date, sorting_choice, user_api):
     api_url = f'https://newsapi.org/v2/everything?q={keyword}&from={user_start_date}&to={user_end_date}&sortBy={sorting_choice}&apiKey={user_api}'
     news = requests.get(api_url).json()
@@ -94,18 +75,33 @@ def get_article_links(keyword, user_start_date, user_end_date, sorting_choice, u
     
     print(my_news)
 
-get_article_links(keyword=keywords, user_start_date=start_date, user_end_date=end_date, sorting_choice=user_sorting_choice, user_api=newsapikey)
+if __name__ == "__main__":
 
-#def get_aticle_links(keyword, year):
- #   """
-  #  Fetches article links from the News API, for keywords and starting year.
-#
- #   Params:
-  #      keyword_1 (str) the requested keyword, like "Tesla"
-   #     start_year (str) the requested start year, like "1998"
-#
- #   Example:
-  #      result = get_article_links(keyword_1="Tesla", start_year="1998")
-#
- #   Returns the link info "url" .
-  #  """
+    print('Please enter a keyword or phrase on a topic you are interested in. Example: iphone x review')
+    print('Please note that no keyword or phrase can be over 100 characters long')
+
+    keywords = input("Keyword or Phrase: ")
+    if len(keywords) > 100:
+        print("Sorry, your keyword was too long. Please run the search again.")
+        quit()
+
+    print('You can enter date parameters for the time period the article was written. First is your start date, and second is your end date. Please enter values in the form of YYYY, MM, DD. You can enter N/A if you dont want a start or end date. Important Note: if you have the free version of the API, you can only go back one month from today\'s date.')
+
+    start_date = get_user_dates()
+    end_date = get_user_dates()
+
+    get_article_links(keyword=keywords, user_start_date=start_date, user_end_date=end_date, sorting_choice=user_sorting_choice, user_api=newsapikey)
+
+    #def get_aticle_links(keyword, year):
+    #   """
+    #  Fetches article links from the News API, for keywords and starting year.
+    #
+    #   Params:
+    #      keyword_1 (str) the requested keyword, like "Tesla"
+    #     start_year (str) the requested start year, like "1998"
+    #
+    #   Example:
+    #      result = get_article_links(keyword_1="Tesla", start_year="1998")
+    #
+    #   Returns the link info "url" .
+    #  """
