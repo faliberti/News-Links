@@ -10,6 +10,14 @@ load_dotenv()
 newsapikey = os.getenv("NEWS_API_KEY")
 
 def user_sorting():
+    '''
+    Obtains sorting method chosen by user (Relevancy, Popularity, or Newest).
+
+    No parameters
+
+    Returns the user sorting option.
+    '''
+
     print('You can sort the search results by relevancy, popularity, or the newest published. Please choose one of relevancy, popularity, newest to sort your articles.')
     user_sort_choice = input('Enter your sorting choice: ')
     choice_options = ['relevancy', 'popularity', 'newest']
@@ -25,7 +33,14 @@ def user_sorting():
 user_sorting_choice = user_sorting()
 
 def get_user_dates():
-    
+    '''
+    Obtains the correct start and end dates for the time period the user would like to search articles from.
+
+    No parameters
+
+    Returns Year, Month, and Day into the correct format of ISO 8601.
+    '''
+
     user_year = input('Year: ')
     if str("N/A") in user_year:
         print('You do not want a date parameter.')
@@ -55,6 +70,22 @@ def get_user_dates():
     return user_date_1
 
 def get_article_links(keyword, user_start_date, user_end_date, sorting_choice):
+    '''
+    Fetches article links from the News API, for keywords and starting year.
+
+    Params:
+        keyword (str) the requested keyword(s), like "Tesla"
+        user_start_date (date object) the requested starting search date, like "2021/05/04"
+        user_end_date (date object) the requesting ending search date, like "2021/05/14"
+        sorting_choice (str) the user choice for sorting, like "newest"
+
+    Example:
+        result = get_article_links(keyword='tesla', user_start_date=startdate, user_end_date=enddate, sorting_choice='newest')
+
+    Prints my_news (list)
+    Returns the dictionary news
+    '''
+
     user_api=newsapikey
     api_url = f'https://newsapi.org/v2/everything?q={keyword}&from={user_start_date}&to={user_end_date}&sortBy={sorting_choice}&apiKey={user_api}'
     news = requests.get(api_url).json()
